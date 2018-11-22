@@ -1,0 +1,43 @@
+#!/bin/bash
+if [ $1 == "-h" ] ; then
+	echo "usage : csv2html [-s ColumnNumber] [-S ColumnName] [-d delimiter] [file]"
+	echo "s : Trie le csv par un numéro de colonne"
+	echo "S : Trie le csv par un nom de colonne"
+	echo "d : change le délimiteur par défaut (; par défaut)"
+	echo "Transforme un fichier csv en table html"
+	exit 0
+fi
+cpt=0;
+sep=";"
+file=$1
+nbCol=`head -1 "$3"|tr "$sep" " "|wc -w`
+if [ $1 == "-d" ]; then
+	sep=$2
+	file=$3
+
+elif [ $1 == "-s" ]; then
+	if [ $2 -gt $nbCol   ] ; then
+		exit 1
+	fi
+	head -1 $3 > /tmp/temp.csv
+	tail -n +2 $3 |sort -t$sep -k$2 >> /tmp/temp.csv
+	file=/tmp/temp.csv
+elif [ $1 == "-S" ]; then
+	
+	for i in `seq 1 $nbCol` ; do
+		if [ `head -1 "$3"|tr "$sep" " "|cut -d' ' -f$i` == $2 ]; then
+			cpt=$i
+		fi
+	done	
+	if [ $cpt -eq 0 ] ; then
+		exit 1
+	fi
+	head -1 $3 > /tmp/temp.csv
+        tail -n +2 $3 |sort -t$sep -k$cpt >> /tmp/temp.csv
+        file=/tmp/temp.csv
+fi
+
+nbLigne=`cat "$file"|wc -l`
+
+gsed -e '1 i\ <table>'  -e 'i\ <tr>' -e "2,$nbLigne s/$sep/<\/td><td>/g" -e "1 s/$sep/<\/th><th>/g" -e '1 i\ <th>' -e '1 a\ <\/th>' -e "2,$nbLigne i\ <td>" -e "2,$nbLigne a\ <\/td>" -e 'a\ <\/tr>'  -e '$ a\ <\/table>' $file
+

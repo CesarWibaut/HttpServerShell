@@ -1,0 +1,79 @@
+header nav a{
+    font-size: 20px;
+    color : white;
+}
+header nav h1 {
+    float : left;
+}
+
+nav {
+    text-align : center;
+    color : white;
+    background-color: black;
+    
+    padding-bottom: 50px;
+    padding-top: 50px;
+
+    margin-left: 20%;
+    margin-right: 20%;
+}
+header nav button {
+    float : right;
+    font-size: 15px;
+    background-color : #39b54a;
+}
+
+img{
+    height : 90%;
+    position : absolute;
+    top:  20%;
+    right: 10%;
+}
+header {
+
+    font-size: 15px;
+    background-image: url("./ressources/images/hero-bg.jpg");
+    background-size: cover;
+    padding-bottom : 45%;
+}
+
+header #art1 {
+    position : relative;
+    color : white;
+    margin-left:  10%;
+    margin-top : 10%;
+    font-size: 2.5em;
+    float : left;
+    margin-right : 50%;
+}
+header #art1 h3{
+    font-size: 30px;
+}
+header #art1 a {
+    color: white;
+    border-style: solid;
+    border-radius : 10px;
+}
+
+
+body{
+    margin: 0;
+    font-family: Lato;
+}
+
+#artintro {
+    margin: 5%;
+}
+
+#artintro h2 {
+    margin-left : 20%;
+    float : left;
+}
+
+#artintro p {
+    position: absolute;
+    margin-left: 40%;
+    margin-right : 20%;
+    color : rgb(102, 102, 102);
+}
+

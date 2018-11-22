@@ -1,0 +1,11 @@
+#!/bin/bash
+
+empty=`printf "\r"`
+echo "HTTP/1.1 406 NOT_ACCEPTABLE$empty"
+echo "Content-Length: 14$empty"
+echo "Content-Type: text/html$empty"
+echo "$empty"
+echo "Not Acceptable"
+
+echo "Erreur : " 406 >&2 
+echo "Not acceptable" >&2

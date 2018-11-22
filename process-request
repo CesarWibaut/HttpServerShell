@@ -1,0 +1,119 @@
+#!/bin/bash
+read method path version
+echo "Script : " $0 >&2
+empty=`printf "\r"`
+htmlfiles=$1
+
+
+
+if [ $method == "GET" ]  && [ $version == "HTTP/1.1$empty" ]; then
+	read line
+	while [ "$line" != $empty ]
+	do
+		read line
+	done
+	echo "Cible :" $path >&2
+	case $path in
+	/contenu/* )
+		if test -e "${path:9}" ; then
+			if test -d "${path:9}" ; then
+				res406
+			else
+				if test -r ${path:9}; then
+					res200 "`cat ${path:9}`" "text/html"
+				else
+					res403 ${path:9}
+				fi
+			fi
+		else
+			res404
+		fi
+	;;
+
+	/html/*/triepar/* )
+		end=`echo $path| tr '/' "\n"|tail -1`
+		file=${path#/*/}
+
+		file=${file%/*}
+		file=${file%/*}
+
+
+		if test -e "$file" ; then
+            if test -r $file; then
+
+        		case $file in
+				*.csv )
+					if [[ $end =~ [0-9+] ]]; then
+						res="$(csv2html -s $end $file)"
+						if [ $? -eq 1 ] ; then
+							res406
+						else 
+							res200 "$res" "text/html"
+						fi
+					else
+						res="$(csv2html -S $end $file)"
+						if [ $? -eq 1 ] ; then
+							res406
+						else 
+							res200 "$res" "text/html"
+						fi
+					fi
+					
+				;;
+				
+				*)	
+					res406
+				;;
+				esac
+
+				
+	    	else
+                res403 ${path:6}
+            fi
+        else
+            res404
+        fi
+
+	;;
+
+
+	/html/* )
+		if [ "${path:6}" == "" ] ; then path="$path". ; fi
+		if test -e "${path:6}" ; then
+            if test -r ${path:6}; then
+
+        		case ${path:6} in
+				*.csv )
+					res200 "$(csv2html ${path:6})" "text/html"
+				;;
+				
+				*.txt )
+					res200 "$(remplace-dans $htmlfiles/template.html < ${path:6})" "text/html"
+				;;	
+				*)	
+					if test -d ${path:6} ; then
+						res200 "$(dir2html ${path:6} $PWD)" "text/html"
+					else 
+						res406
+					fi
+				;;
+				esac
+
+				
+	    	else
+                res403 ${path:6}
+            fi
+        else
+            res404
+        fi
+	;;
+
+
+
+	*)	res404
+	;;
+
+	esac
+else 
+	res405
+fi

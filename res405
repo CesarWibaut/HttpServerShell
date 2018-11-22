@@ -1,0 +1,11 @@
+#!/bin/bash
+
+empty=`printf "\r"`
+echo "HTTP/1.1 405 METHOD_NOT_ALLOWED$empty"
+echo "Content-Length: 18$empty"
+echo "Content-Type: text/html$empty"
+echo "$empty"
+echo "Method not allowed"
+
+echo "Erreur : " 405 >&2 
+echo "Method not allowed" >&2

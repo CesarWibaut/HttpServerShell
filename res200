@@ -1,0 +1,11 @@
+#!/bin/bash
+
+taille=`echo "$1"|wc -c`
+
+echo "HTTP/1.1 200 OK$empty"
+echo "Content-Length: $taille$empty"
+echo "Content-Type: $2$empty"
+echo "$empty"
+echo "$1"
+echo "Info : " 200 >&2 
+echo "Good Request" >&2

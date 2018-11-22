@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ $1 == "-h" ] ; then
+	echo "usage : remplace-dans [modele] < [corps]"
+	echo "Remplace une partie du modele par le corps"
+	echo "La partie à remplacer doit commencer par ---DEBUT_REMPLACEMENT--- et finir par ---FIN_REMPLACEMENT---"
+	exit 0
+fi
+nbLigne="$(cat $1|wc -l)"
+corps="`cat |tr "\n" " "`"
+for i in `seq 1 $nbLigne`; do
+	current="`head -$i $1|tail -1`"
+	if [ "$current" == "--DEBUT_REMPLACEMENT--" ]; then
+		debut=$i
+	fi
+
+	if [ "$current" == "--FIN_REMPLACEMENT--" ]; then
+        fin=$i
+	fi
+	
+done	
+gsed "$debut,$fin c $corps" $1		

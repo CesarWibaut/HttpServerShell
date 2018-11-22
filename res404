@@ -1,0 +1,11 @@
+#!/bin/bash
+
+empty=`printf "\r"`
+echo "HTTP/1.1 404 NOT_FOUND$empty"
+echo "Content-Length: 14$empty"
+echo "Content-Type: text/html$empty"
+echo "$empty"
+echo "File not found"
+
+echo "Erreur : " 404 >&2 
+echo "File not found" >&2

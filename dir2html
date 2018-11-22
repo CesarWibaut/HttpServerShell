@@ -1,0 +1,22 @@
+#!/bin/bash
+if [ $1 == "-h" ] ; then
+    echo "usage : dir2html [directory]"
+    echo "Créer une liste en html d'un répertoire"
+    exit 0
+fi
+servPath=$2 
+echo "<ul>"
+cd $servPath/$1
+for i in * ; do
+
+    echo "<li>"
+    if test -d "$servPath/$1/$i" || [ ${i#*.} == "csv" ] || [ ${i#*.} == "txt" ] ; then
+        echo "<a href=\"/html/$1/$i\" > $i </a>"
+    else
+        echo "<a href=\"/contenu/$1/$i\" > $i </a>"
+    fi
+
+    echo "</li>"
+
+done
+echo "</ul>"

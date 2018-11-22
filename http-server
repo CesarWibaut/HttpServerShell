@@ -1,0 +1,32 @@
+#!/bin/bash
+
+PATH="/Users/wibautc/Documents/DA2I/OS/Sujet05":$PATH
+servPath="$(pwd)"
+port="8080"
+htmlfiles="/Users/wibautc/Documents/DA2I/OS/Sujet05/templates"
+
+while [ $1 != "" ] ; do 
+    case $1 in
+    -h ) 
+        echo "usage : http-server [-p port] [-d directory] [-t templates]"
+        echo "p : port utilisé"
+        echo "d : répertoire de base du serveur"
+        echo "t : chemin absolu répertoire du fichier html à transformer (voir remplace-dans) *doit être appelé templates.html*"
+        echo "Créer un serveur web"
+        exit 0
+    ;;
+    -p )
+        port=$2
+        shift 2
+    ;;
+    -d )
+        servPath=$2
+        shift 2
+    ;;
+    -t )
+        htmlfiles=$2
+        shift 2
+    esac
+done
+
+get-request $servPath $port $htmlfiles
